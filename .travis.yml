@@ -5,8 +5,8 @@ services:
   - docker
 addons:
   hosts:
-    - le.wtf
-    - le2.wtf
+    - le.example.org
+    - le2.example.org
     - boulder
     - boulder-mysql
     - boulder-rabbitmq

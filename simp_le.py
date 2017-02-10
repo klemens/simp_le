@@ -1468,7 +1468,9 @@ class IntegrationTests(unittest.TestCase):
     """Integrations tests with Boulder.
 
     Prerequisites:
-    - /etc/hosts:127.0.0.1 le.wtf
+    - /etc/hosts:
+      - 127.0.0.1 le.example.org
+      - 127.0.0.1 le2.example.org
     - Boulder running on localhost:4000
     - Boulder verifying http-01 on port 5002
     """
@@ -1512,7 +1514,7 @@ class IntegrationTests(unittest.TestCase):
     def test_it(self):
         webroot = os.path.join(os.getcwd(), 'public_html')
         args = ('--server %s --tos_sha256 %s -f account_key.json '
-                '-f key.pem -f full.pem -d le.wtf:%s' % (
+                '-f key.pem -f full.pem -d le.example.org:%s' % (
                     self.SERVER, self.TOS_SHA256, webroot))
         files = ('account_key.json', 'key.pem', 'full.pem')
         with self._new_swd():
@@ -1533,7 +1535,7 @@ class IntegrationTests(unittest.TestCase):
 
             # Changing SANs should trigger "renewal"
             self.assertEqual(
-                EXIT_RENEWAL, self._run('%s -d le2.wtf:%s' % (args, webroot)))
+                EXIT_RENEWAL, self._run('%s -d le2.example.org:%s' % (args, webroot)))
             # but it shouldn't unnecessarily overwrite the account key (#67)
             self.assertEqual(unchangeable_stats, self.get_stats(files[0]))
 
